@@ -1,0 +1,237 @@
+<title>پرامپت‌های سایت شخصی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: one centered reading column; a sticky role switch (designer / PM); prompts grouped in four phases, each a card with a copy action */
+:root {
+  --bg: #F5F4F1;
+  --surface: #FFFFFF;
+  --ink: #16181B;
+  --soft: #5E626A;
+  --line: #E3E1DB;
+  --accent: #C8372D;
+  --accent-soft: #FBEAE7;
+  --code-bg: #FAF9F7;
+  --mark-bg: #FFF1C9;
+  --mark-fg: #6B4A00;
+  --f-body: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121316; --surface: #1B1D21; --ink: #ECECEA; --soft: #A2A6AD; --line: #2D3036;
+    --accent: #F0715F; --accent-soft: #3A2320; --code-bg: #15171A; --mark-bg: #3B3116; --mark-fg: #F5D98A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121316; --surface: #1B1D21; --ink: #ECECEA; --soft: #A2A6AD; --line: #2D3036;
+  --accent: #F0715F; --accent-soft: #3A2320; --code-bg: #15171A; --mark-bg: #3B3116; --mark-fg: #F5D98A; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.9; }
+.wrap { direction: rtl; max-width: 860px; margin: 0 auto; padding-inline: 20px; padding-block: 56px 96px; display: grid; gap: 40px; }
+header { display: grid; gap: 14px; }
+.eyebrow { font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: .02em; }
+h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); line-height: 1.3; font-weight: 800; text-wrap: balance; }
+.lead { margin: 0; color: var(--soft); font-size: 18px; max-width: 60ch; }
+.how { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--soft); margin: 0; padding: 0; list-style: none; }
+.how li { display: flex; gap: 8px; align-items: center; }
+.how mark { background: var(--mark-bg); color: var(--mark-fg); border-radius: 4px; padding: 0 6px; font-weight: 500; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 12px; margin-block: -12px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.bar > span { font-size: 14px; color: var(--soft); }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.seg button { font: inherit; font-size: 14px; font-weight: 500; border: 0; background: transparent; color: var(--soft); padding: 5px 18px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.phase { display: grid; gap: 16px; }
+.phase-head { display: flex; gap: 14px; align-items: baseline; }
+.phase-head .k { font-size: 13px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.phase-head h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.phase-head p { margin: 0; color: var(--soft); font-size: 14.5px; }
+.phase-head div { display: grid; gap: 2px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.card-top { display: flex; gap: 14px; align-items: flex-start; justify-content: space-between; padding: 18px 20px 12px; }
+.card-top div { display: grid; gap: 2px; min-width: 0; }
+.card h3 { margin: 0; font-size: 17.5px; font-weight: 700; display: flex; gap: 10px; align-items: baseline; }
+.card h3 .num { color: var(--soft); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.card .when { color: var(--soft); font-size: 14px; }
+.copy { font: inherit; font-size: 13.5px; font-weight: 500; flex: none; display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 14px; cursor: pointer; }
+.copy:hover { border-color: var(--ink); }
+.copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.copy svg { width: 14px; height: 14px; }
+.copy.done { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+pre { margin: 0; background: var(--code-bg); border-top: 1px solid var(--line); padding: 16px 20px 18px; white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--f-body); font-size: 15px; line-height: 2.05; direction: rtl; color: var(--ink); }
+pre mark { background: var(--mark-bg); color: var(--mark-fg); border-radius: 4px; padding: 1px 5px; }
+[data-role="pm"] .d, [data-role="designer"] .p { display: none; }
+
+.tip { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14.5px; }
+footer { color: var(--soft); font-size: 13.5px; border-top: 1px solid var(--line); padding-top: 18px; }
+@media (max-width: 600px) {
+  .wrap { padding-inline: 16px; padding-block: 32px 64px; gap: 32px; }
+  .card-top { padding: 16px 16px 10px; }
+  pre { padding: 14px 16px 16px; font-size: 14.5px; }
+  .phase-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+}
+</style>
+
+<div class="wrap" lang="fa" dir="rtl" data-role="designer" id="root">
+  <header>
+    <span class="eyebrow">ورکشاپ وایب کدینگ برای دیزاینرها و PMها</span>
+    <h1>پرامپت‌های ساخت سایت شخصی با AI</h1>
+    <p class="lead">ده پرامپت به ترتیب کار، از بریف تا انتشار. هرکدوم رو کپی کن، جاهای خالی رو پر کن و بفرست.</p>
+    <ul class="how">
+      <li><mark>[این‌ها]</mark> رو با اطلاعات خودت عوض کن</li>
+      <li>هرجا گفته «ضمیمه»، فایل یا عکس رو همراه پیام بفرست</li>
+      <li>به ترتیب جلو برو؛ هر پرامپت روی خروجی قبلی سوار می‌شه</li>
+    </ul>
+  </header>
+
+  <div class="bar">
+    <span>پرامپت‌ها برای نقش من:</span>
+    <div class="seg" role="group" aria-label="نقش">
+      <button type="button" id="r-designer" data-r="designer" aria-pressed="true">پروداکت دیزاینر</button>
+      <button type="button" id="r-pm" data-r="pm" aria-pressed="false">پروداکت منیجر</button>
+    </div>
+  </div>
+
+  <section class="phase">
+    <div class="phase-head"><span class="k">مرحله‌ی ۱</span><div><h2>فکر</h2><p>قبل از هر طراحی: برای کی، چی، با چه ساختاری.</p></div></div>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۱</span>بریف</h3><span class="when">اولین پیام. هنوز هیچ چیزی ساخته نمی‌شه.</span></div><button class="copy" type="button" id="c1">کپی</button></div>
+<pre>می‌خوام یه سایت شخصی بسازم.
+من <span class="d">پروداکت دیزاینر</span><span class="p">پروداکت منیجر</span> هستم با <mark>[چند سال]</mark> تجربه در <mark>[حوزه یا صنعت]</mark>.
+خواننده‌ی اصلی سایت <mark>[هایرینگ منیجر / رکروتر / مشتری]</mark> هست و بعد از دیدنش باید <mark>[پیام بده / رزومه رو دانلود کنه / دعوتم کنه به مصاحبه]</mark>.
+
+قبل از هر کاری کمکم کن یه بریف یک‌صفحه‌ای بنویسیم:
+هدف، مخاطب، پیام اصلی درباره‌ی من، پروژه‌های منتخب، لحن.
+سؤال‌هات رو یک‌جا و شماره‌دار بپرس؛ من با شماره جواب می‌دم.</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۲</span>ساختار از روی الگو</h3><span class="when">به‌جای اختراع ساختار، از بهترین‌ها یاد بگیر.</span></div><button class="copy" type="button" id="c2">کپی</button></div>
+<pre>با این بریف، ساختار سایت رو طراحی کنیم.
+اول <span class="d">پورتفولیوها و کیس‌استادی‌های شناخته‌شده‌ی پروداکت دیزاینرها</span><span class="p">پورتفولیوها و داستان‌های محصولی پروداکت منیجرهای شناخته‌شده</span> رو بررسی کن
+و بگو معمولاً چه بخش‌هایی دارن، به چه ترتیبی، و چرا.
+
+بعد برای من پیشنهاد بده:
+۱. نقشه‌ی صفحه‌ها (چه صفحه‌هایی، هرکدوم چه بخش‌هایی)
+۲. یه قالب ثابت برای <span class="d">هر کیس‌استادی</span><span class="p">هر پروژه</span>
+۳. این‌که خواننده در ۳۰ ثانیه‌ی اول باید چی بفهمه</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۳</span>مصاحبه برای محتوا</h3><span class="when">برای هر پروژه یک بار. AI می‌پرسه، تو جواب می‌دی.</span></div><button class="copy" type="button" id="c3">کپی</button></div>
+<pre>با همین قالب، برای پروژه‌ی <mark>[اسم پروژه]</mark> محتوا می‌نویسیم.
+ماده‌ی خام ضمیمه‌ست: <mark>[PDF / لینک فیگما / اسکرین‌شات / یادداشت]</mark>
+
+هنوز چیزی ننویس. اول همه‌ی سؤال‌هات رو یک‌جا و شماره‌دار بپرس، درباره‌ی:
+<span class="d">زمینه، مسئله‌ی کاربر، نقش من، روند طراحی، تصمیم‌های کلیدی و دلیلشون، نتیجه، چیزی که یاد گرفتم</span><span class="p">زمینه، مسئله‌ی کسب‌وکار، نقش من، اولویت‌بندی و trade-offها، هم‌راستا کردن تیم، متریک‌ها و نتیجه، چیزی که یاد گرفتم</span>
+
+قانون: هیچ عدد، نام یا ادعایی نساز. هرجا چیزی نمی‌دونی بنویس <mark>[؟]</mark>.</pre></article>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><span class="k">مرحله‌ی ۲</span><div><h2>مواد</h2><p>عکس‌ها و حس بصری، قبل از ساخت.</p></div></div>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۴</span>فهرست عکس‌ها</h3><span class="when">بدون عکس خوب، سایت خوب ساخته نمی‌شه.</span></div><button class="copy" type="button" id="c4">کپی</button></div>
+<pre>یه لیست شماره‌دار از همه‌ی تصویرهایی که سایت لازم داره بده.
+برای هرکدوم بنویس: کجای سایت، چی باید توش باشه، نسبت ابعاد، اسم فایل.
+<span class="d">(مثلاً صفحه‌های کلیدی، فلوها، قبل و بعد، دیزاین سیستم)</span><span class="p">(مثلاً اسکرین‌شات محصول، نمودار متریک‌ها، روادمپ، فریم‌ورک تصمیم‌گیری)</span>
+
+توی سایت، جای هر تصویر یه مستطیل خاکستری با همون اسم بذار، نه تصویر ساختگی.
+من تصویرها رو به ترتیب شماره می‌فرستم.</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۵</span>تم از روی رفرنس</h3><span class="when">نشون بده، توصیف نکن.</span></div><button class="copy" type="button" id="c5">کپی</button></div>
+<pre>این تصویرها رفرنس بصری منن (ضمیمه): <mark>[مودبورد / سایت‌هایی که دوست دارم / یه بافت یا عکس]</mark>
+ازشون رنگ، فونت (از Google Fonts)، فاصله‌ها و حس کلی رو دربیار
+و به‌صورت توکن تعریف کن.
+
+سه جهت بصری متفاوت پیشنهاد بده، هرکدوم با:
+یک ایده‌ی امضایی که فقط مال این سایت باشه، و یک جمله درباره‌ی حسش.
+من یکی رو انتخاب می‌کنم.</pre></article>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><span class="k">مرحله‌ی ۳</span><div><h2>ساخت</h2><p>کوچیک شروع کن، دور به دور بهترش کن.</p></div></div>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۶</span>نسخه‌ی اول</h3><span class="when">فقط صفحه‌ی اصلی و یک پروژه. بقیه بعد.</span></div><button class="copy" type="button" id="c6">کپی</button></div>
+<pre>از روی بریف، ساختار، محتوا و تمی که انتخاب کردم، سایت رو بساز.
+- یک فایل HTML، بدون نیاز به نصب
+- کاملاً ریسپانسیو، از موبایل ۳۹۰ تا دسکتاپ ۱۴۴۰ پیکسل
+- انیمیشن‌ها با تنظیم reduced motion خاموش بشن
+- فرم تماس نساز؛ لینک ایمیل و <mark>[لینکدین / سایر شبکه‌ها]</mark> بذار
+- زبان متن‌های سایت: <mark>[فارسی، راست‌به‌چپ / انگلیسی]</mark>
+
+اول فقط صفحه‌ی اصلی و <span class="d">یک کیس‌استادی</span><span class="p">یک پروژه</span> رو بساز تا اسکلت رو تأیید کنم.</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۷</span>اصلاح دقیق</h3><span class="when">هر بار که چیزی رو می‌خوای عوض کنی.</span></div><button class="copy" type="button" id="c7">کپی</button></div>
+<pre>این اسکرین‌شات بخش <mark>[اسم بخش]</mark> در <mark>[موبایل / دسکتاپ]</mark> هست (ضمیمه).
+این تغییرها رو بده:
+۱. <mark>[چی، کجا، چقدر. مثلاً: تصویر بره نیمه‌ی راست و دو برابر بشه]</mark>
+۲. <mark>[…]</mark>
+
+بقیه‌ی سایت دست نخوره. بعد از تغییر، بگو دقیقاً چی عوض شد.</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۸</span>ممیزی</h3><span class="when">آخر هر دور ساخت، قبل از رفتن سراغ بخش بعدی.</span></div><button class="copy" type="button" id="c8">کپی</button></div>
+<pre>مثل یه <span class="d">طراح ارشد سخت‌گیر</span><span class="p">هایرینگ منیجر سخت‌گیر</span> و یه QA، سایت رو بررسی کن
+و همه‌ی مشکلات رو شماره‌دار لیست کن:
+محتوای ناهماهنگ یا تکراری، ادعای بدون پشتوانه، لینک خراب، مشکل موبایل،
+دسترس‌پذیری (کنتراست، کیبورد، متن alt)، تصویر بی‌کیفیت، جزئیاتی که جا افتاده.
+
+هنوز چیزی رو درست نکن. من با شماره می‌گم کدوم‌ها درست بشن.</pre></article>
+  </section>
+
+  <section class="phase">
+    <div class="phase-head"><span class="k">مرحله‌ی ۴</span><div><h2>انتشار</h2><p>یه لینک زنده، و راهی برای ادامه دادن.</p></div></div>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۰۹</span>انتشار</h3><span class="when">وقتی ممیزی تمیز شد.</span></div><button class="copy" type="button" id="c9">کپی</button></div>
+<pre>می‌خوام سایت رو روی <mark>[GitHub Pages / Netlify / …]</mark> منتشر کنم.
+من کد بلد نیستم؛ قدم‌به‌قدم و ساده بگو چیکار کنم.
+
+قبلش مطمئن شو سایت این‌ها رو داره:
+عنوان و توضیح صفحه، تصویر پیش‌نمایش لینک (og:image)، favicon، صفحه‌ی ۴۰۴.
+اگه دامنه‌ی اختصاصی دارم (<mark>[اسم دامنه یا «ندارم»]</mark>)، تنظیمات DNS رو هم بگو.</pre></article>
+
+    <article class="card"><div class="card-top"><div><h3><span class="num">۱۰</span>خلاصه‌ی تصمیم‌ها</h3><span class="when">وقتی چت طولانی شد، یا قبل از بستنش.</span></div><button class="copy" type="button" id="c10">کپی</button></div>
+<pre>همه‌ی تصمیم‌هایی که تا الان درباره‌ی این سایت گرفتیم رو خلاصه کن:
+بریف، ساختار، تم و توکن‌ها، قانون‌های محتوا، چیزهای ممنوع، و کارهای باقی‌مونده.
+طوری بنویس که اگه توی یه چت جدید بدمش، کار رو بدون سؤال ادامه بدی.</pre></article>
+  </section>
+
+  <p class="tip"><b>یه قانون برای همه‌ی پرامپت‌ها:</b> هرچی بیشتر خودت بدی (عکس، متن خام، الگو، قانون)، کمتر AI حدس می‌زنه و سایت بیشتر شبیه خودت می‌شه.</p>
+
+  <footer>ورکشاپ «Vibe Coding for Designers and PMs» · مهر ۱۴۰۵</footer>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('root');
+  var btns = document.querySelectorAll('.seg button');
+  function setRole(r) {
+    root.setAttribute('data-role', r);
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-r') === r ? 'true' : 'false'); });
+    try { localStorage.setItem('prompt-role', r); } catch (e) {}
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { setRole(b.getAttribute('data-r')); }); });
+  try { var saved = localStorage.getItem('prompt-role'); if (saved === 'pm' || saved === 'designer') setRole(saved); } catch (e) {}
+
+  var icon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>';
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.innerHTML = icon + '<span>کپی</span>';
+    var label = btn.querySelector('span');
+    btn.addEventListener('click', function () {
+      var pre = btn.closest('.card').querySelector('pre');
+      var clone = pre.cloneNode(true);
+      var hide = root.getAttribute('data-role') === 'pm' ? '.d' : '.p';
+      clone.querySelectorAll(hide).forEach(function (n) { n.remove(); });
+      var text = clone.textContent;
+      var flash = function (t, ok) { label.textContent = t; btn.classList.toggle('done', ok); setTimeout(function () { label.textContent = 'کپی'; btn.classList.remove('done'); }, 1600); };
+      var fallback = function () {
+        var r = document.createRange(); r.selectNodeContents(pre);
+        var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+        flash('انتخاب شد', false);
+      };
+      try { navigator.clipboard.writeText(text).then(function () { flash('کپی شد', true); }, fallback); } catch (e) { fallback(); }
+    });
+  });
+})();
+</script>
